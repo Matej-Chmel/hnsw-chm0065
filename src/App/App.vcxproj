@@ -61,21 +61,29 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\res\props\C++17.props" />
     <Import Project="..\res\props\Include HNSW.props" />
+    <Import Project="..\res\props\Include Bruteforce.props" />
+    <Import Project="..\res\props\Include ElementGenerator.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\res\props\C++17.props" />
     <Import Project="..\res\props\Include HNSW.props" />
+    <Import Project="..\res\props\Include Bruteforce.props" />
+    <Import Project="..\res\props\Include ElementGenerator.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\res\props\C++17.props" />
     <Import Project="..\res\props\Include HNSW.props" />
+    <Import Project="..\res\props\Include Bruteforce.props" />
+    <Import Project="..\res\props\Include ElementGenerator.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\res\props\C++17.props" />
     <Import Project="..\res\props\Include HNSW.props" />
+    <Import Project="..\res\props\Include Bruteforce.props" />
+    <Import Project="..\res\props\Include ElementGenerator.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -150,6 +158,12 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bruteforce\Bruteforce.vcxproj">
+      <Project>{c123c3e2-ce4d-4914-8ab1-10ae73272850}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ElementGenerator\ElementGenerator.vcxproj">
+      <Project>{3aaed591-2e9f-4af6-9180-fad81209b90c}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\HNSW\HNSW.vcxproj">
       <Project>{9fe61a51-084a-46dc-8f51-7ee983f95a4a}</Project>
     </ProjectReference>

@@ -15,39 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Graph.hpp">
+    <ClInclude Include="Bruteforce.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DynamicList.hpp">
+    <ClInclude Include="BruteforceItem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NodeDistance.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NearestComparator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FurthestComparator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NearestHeap.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FurthestHeap.hpp">
+    <ClInclude Include="Comparator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Graph.cpp">
+    <ClCompile Include="Bruteforce.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DynamicList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NearestHeap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FurthestHeap.cpp">
+    <ClCompile Include="BruteforceItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

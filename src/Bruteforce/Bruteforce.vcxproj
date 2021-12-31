@@ -18,26 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="DynamicList.hpp" />
-    <ClInclude Include="FurthestComparator.hpp" />
-    <ClInclude Include="FurthestHeap.hpp" />
-    <ClInclude Include="Graph.hpp" />
-    <ClInclude Include="NearestComparator.hpp" />
-    <ClInclude Include="NearestHeap.hpp" />
-    <ClInclude Include="NodeDistance.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="DynamicList.cpp" />
-    <ClCompile Include="FurthestHeap.cpp" />
-    <ClCompile Include="Graph.cpp" />
-    <ClCompile Include="NearestHeap.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{9fe61a51-084a-46dc-8f51-7ee983f95a4a}</ProjectGuid>
-    <RootNamespace>HNSW</RootNamespace>
+    <ProjectGuid>{c123c3e2-ce4d-4914-8ab1-10ae73272850}</ProjectGuid>
+    <RootNamespace>Bruteforce</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -74,19 +59,15 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\res\props\C++17.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\res\props\C++17.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\res\props\C++17.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\res\props\C++17.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -157,6 +138,15 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Bruteforce.hpp" />
+    <ClInclude Include="Comparator.hpp" />
+    <ClInclude Include="BruteforceItem.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Bruteforce.cpp" />
+    <ClCompile Include="BruteforceItem.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
