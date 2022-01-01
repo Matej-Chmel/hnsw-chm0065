@@ -161,6 +161,22 @@ namespace chm {
 		results.keepNearest(M);
 	}
 
+	void Graph::knnSearch(
+		size_t queryID, size_t K, size_t ef,
+		std::vector<size_t>& outIDs, std::vector<float>& outDistances
+	) {
+		DynamicList W(this->getDistance(this->entryID, queryID, false), this->entryID);
+		auto L = this->entryLevel;
+
+		for (size_t lc = L; lc > 0; lc--) {
+			this->searchLayer(queryID, W, 1, lc, false);
+			W.keepOnlyNearest();
+		}
+
+		this->searchLayer(queryID, W, ef, 0, false);
+		W.fillResults(K, outIDs, outDistances);
+	}
+
 	void Graph::connect(size_t queryID, NearestHeap& neighbors, size_t lc) {
 		auto& qLayer = this->layers[queryID][lc];
 
@@ -208,5 +224,17 @@ namespace chm {
 
 		for (size_t i = 1; i < count; i++)
 			this->insert(i);
+	}
+
+	void Graph::search(
+		float* queryCoords, size_t queryCount, size_t K, size_t ef,
+		std::vector<std::vector<size_t>>& outIDs, std::vector<std::vector<float>>& outDistances
+	) {
+		outIDs.resize(queryCount);
+		outDistances.resize(queryCount);
+		this->queryCoords = queryCoords;
+
+		for (size_t i = 0; i < queryCount; i++)
+			this->knnSearch(i, K, ef, outIDs[i], outDistances[i]);
 	}
 }

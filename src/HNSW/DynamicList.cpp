@@ -15,6 +15,20 @@ namespace chm {
 		this->add(distance, entryID);
 	}
 
+	void DynamicList::fillResults(size_t K, std::vector<size_t>& outIDs, std::vector<float>& outDistances) {
+		size_t len = (K > this->size()) ? K : this->size();
+		outIDs.reserve(len);
+		outDistances.reserve(len);
+
+		for (size_t i = 0; i < len; i++) {
+			auto& item = this->nearestHeap.top();
+
+			outIDs.push_back(item.nodeID);
+			outDistances.push_back(item.distance);
+			this->nearestHeap.pop();
+		}
+	}
+
 	NodeDistance DynamicList::furthest() {
 		return this->furthestHeap.top();
 	}

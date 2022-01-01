@@ -12,6 +12,7 @@ namespace chm {
 
 		void add(float distance, size_t nodeID);
 		DynamicList(float distance, size_t entryID);
+		void fillResults(size_t K, std::vector<size_t>& outIDs, std::vector<float>& outDistances);
 		NodeDistance furthest();
 		void keepOnlyNearest();
 		void removeFurthest();
