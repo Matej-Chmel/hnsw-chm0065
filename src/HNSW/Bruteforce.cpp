@@ -18,7 +18,7 @@ namespace chm {
 		this->distances.resize(count);
 	}
 
-	void Bruteforce::search(float* query, size_t K, std::vector<size_t>& outIDs, std::vector<float>& outDistances) {
+	void Bruteforce::search(float* query, size_t K, IDVec& outIDs, FloatVec& outDistances) {
 		outIDs.resize(this->count);
 
 		for(size_t i = 0; i < this->count; i++) {
@@ -38,10 +38,7 @@ namespace chm {
 			outDistances.push_back(this->distances[id]);
 	}
 
-	void Bruteforce::search(
-		float* queryCoords, size_t queryCount, size_t K,
-		std::vector<std::vector<size_t>>& outIDs, std::vector<std::vector<float>>& outDistances
-	) {
+	void Bruteforce::search(float* queryCoords, size_t queryCount, size_t K, IDVec2D& outIDs, FloatVec2D& outDistances) {
 		outIDs.resize(queryCount);
 		outDistances.resize(queryCount);
 

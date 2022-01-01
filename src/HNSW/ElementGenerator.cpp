@@ -8,7 +8,7 @@ namespace chm {
 		this->dist = std::uniform_real_distribution<float>(min, max);
 	}
 
-	void ElementGenerator::fill(std::vector<float>& target, size_t dim, size_t count) {
+	void ElementGenerator::fill(FloatVec& target, size_t dim, size_t count) {
 		size_t len = count * dim;
 		target.reserve(len);
 

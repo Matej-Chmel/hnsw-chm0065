@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <cmath>
 #include <unordered_set>
-#include "DynamicList.hpp"
 #include "Graph.hpp"
 
 namespace chm {
@@ -161,10 +160,7 @@ namespace chm {
 		results.keepNearest(M);
 	}
 
-	void Graph::knnSearch(
-		size_t queryID, size_t K, size_t ef,
-		std::vector<size_t>& outIDs, std::vector<float>& outDistances
-	) {
+	void Graph::knnSearch(size_t queryID, size_t K, size_t ef, IDVec& outIDs, FloatVec& outDistances) {
 		DynamicList W(this->getDistance(this->entryID, queryID, false), this->entryID);
 		auto L = this->entryLevel;
 
@@ -226,10 +222,7 @@ namespace chm {
 			this->insert(i);
 	}
 
-	void Graph::search(
-		float* queryCoords, size_t queryCount, size_t K, size_t ef,
-		std::vector<std::vector<size_t>>& outIDs, std::vector<std::vector<float>>& outDistances
-	) {
+	void Graph::search(float* queryCoords, size_t queryCount, size_t K, size_t ef, IDVec2D& outIDs, FloatVec2D& outDistances) {
 		outIDs.resize(queryCount);
 		outDistances.resize(queryCount);
 		this->queryCoords = queryCoords;

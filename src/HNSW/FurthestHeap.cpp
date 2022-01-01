@@ -8,7 +8,7 @@ namespace chm {
 
 	FurthestHeap::FurthestHeap() {}
 
-	FurthestHeap::FurthestHeap(std::vector<NodeDistance>& ep) {
+	FurthestHeap::FurthestHeap(NodeDistanceVec& ep) {
 		this->nodes = ep;
 		std::make_heap(this->nodes.begin(), this->nodes.end(), this->cmp);
 	}

@@ -29,6 +29,7 @@
     <ClInclude Include="NearestHeap.hpp" />
     <ClInclude Include="NodeDistance.hpp" />
     <ClInclude Include="recall.hpp" />
+    <ClInclude Include="types.hpp" />
     <ClInclude Include="Unique.hpp" />
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@
 #include "recall.hpp"
 
 namespace chm {
-	void calcCorrect(std::vector<size_t>& foundIDs, std::vector<size_t>& trueIDs, size_t& outCorrect) {
+	void calcCorrect(IDVec& foundIDs, IDVec& trueIDs, size_t& outCorrect) {
 		std::unordered_set<size_t> foundSet(foundIDs.begin(), foundIDs.end());
 
 		for(auto& ID : trueIDs)
@@ -10,7 +10,7 @@ namespace chm {
 				outCorrect++;
 	}
 
-	float recall(std::vector<std::vector<size_t>>& foundIDs, std::vector<std::vector<size_t>>& trueIDs, size_t maxCorrect) {
+	float recall(IDVec2D& foundIDs, IDVec2D& trueIDs, size_t maxCorrect) {
 		size_t correct = 0;
 		auto len = trueIDs.size();
 

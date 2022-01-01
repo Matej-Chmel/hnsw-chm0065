@@ -2,7 +2,6 @@
 #include "DynamicList.hpp"
 #include <random>
 #include <unordered_map>
-#include <vector>
 
 namespace chm {
 	class Graph {
@@ -21,7 +20,7 @@ namespace chm {
 		size_t entryLevel;
 
 		std::unordered_map<size_t, float> distances;
-		std::vector<std::vector<std::vector<size_t>>> layers;
+		std::vector<IDVec2D> layers;
 
 		float* coords;
 		size_t dim;
@@ -38,10 +37,7 @@ namespace chm {
 		void selectNeighbors(size_t queryID, DynamicList& C, size_t M, size_t lc, NearestHeap& results);
 		void selectNeighborsHeuristic(size_t queryID, DynamicList& C, size_t M, size_t lc, NearestHeap& results);
 		void selectNeighborsSimple(size_t queryID, DynamicList& C, size_t M, NearestHeap& results);
-		void knnSearch(
-			size_t queryID, size_t K, size_t ef,
-			std::vector<size_t>& outIDs, std::vector<float>& outDistances
-		);
+		void knnSearch(size_t queryID, size_t K, size_t ef, IDVec& outIDs, FloatVec& outDistances);
 
 		void connect(size_t queryID, NearestHeap& neighbors, size_t lc);
 		void initLayers(size_t queryID, size_t level);
@@ -50,9 +46,6 @@ namespace chm {
 		Graph(size_t seed, bool rndSeed);
 
 		void build(float* coords, size_t dim, size_t count);
-		void search(
-			float* queryCoords, size_t queryCount, size_t K, size_t ef,
-			std::vector<std::vector<size_t>>& outIDs, std::vector<std::vector<float>>& outDistances
-		);
+		void search(float* queryCoords, size_t queryCount, size_t K, size_t ef, IDVec2D& outIDs, FloatVec2D& outDistances);
 	};
 }

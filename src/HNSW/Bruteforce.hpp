@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "types.hpp"
 #include "Unique.hpp"
 
 namespace chm {
@@ -7,7 +8,7 @@ namespace chm {
 		float* coords;
 		size_t count;
 		size_t dim;
-		std::vector<float> distances;
+		FloatVec distances;
 
 		float getDistance(size_t nodeID, float* query);
 
@@ -19,10 +20,7 @@ namespace chm {
 
 	public:
 		Bruteforce(float* coords, size_t dim, size_t count);
-		void search(float* query, size_t K, std::vector<size_t>& outIDs, std::vector<float>& outDistances);
-		void search(
-			float* queryCoords, size_t queryCount, size_t K,
-			std::vector<std::vector<size_t>>& outIDs, std::vector<std::vector<float>>& outDistances
-		);
+		void search(float* query, size_t K, IDVec& outIDs, FloatVec& outDistances);
+		void search(float* queryCoords, size_t queryCount, size_t K, IDVec2D& outIDs, FloatVec2D& outDistances);
 	};
 }

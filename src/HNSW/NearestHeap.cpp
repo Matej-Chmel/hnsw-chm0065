@@ -10,7 +10,7 @@ namespace chm {
 		this->nodes = other.nodes;
 	}
 
-	void NearestHeap::fillLayer(std::vector<size_t>& layer) {
+	void NearestHeap::fillLayer(IDVec& layer) {
 		layer.clear();
 		layer.reserve(this->nodes.size());
 
@@ -41,7 +41,7 @@ namespace chm {
 		this->copyFrom(other);
 	}
 
-	NearestHeap::NearestHeap(std::vector<NodeDistance>& ep) {
+	NearestHeap::NearestHeap(NodeDistanceVec& ep) {
 		this->nodes = ep;
 		std::make_heap(this->nodes.begin(), this->nodes.end(), this->cmp);
 	}

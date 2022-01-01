@@ -1,6 +1,6 @@
 #pragma once
 #include <random>
-#include <vector>
+#include "types.hpp"
 
 namespace chm {
 	class ElementGenerator {
@@ -10,6 +10,6 @@ namespace chm {
 	public:
 		ElementGenerator(float min, float max);
 		ElementGenerator(float min, float max, unsigned int seed);
-		void fill(std::vector<float>& target, size_t dim, size_t count);
+		void fill(FloatVec& target, size_t dim, size_t count);
 	};
 }

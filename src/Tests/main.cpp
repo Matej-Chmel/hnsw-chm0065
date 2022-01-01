@@ -16,7 +16,7 @@ void passed(const char* name) {
 	std::cout << name << " PASSED\n";
 }
 
-void testCoordinatesLen(std::vector<float>& coords, size_t elementCount) {
+void testCoordinatesLen(chm::FloatVec& coords, size_t elementCount) {
 	auto actualLen = coords.size();
 	auto expectedLen = elementCount * DIM;
 
@@ -26,7 +26,7 @@ void testCoordinatesLen(std::vector<float>& coords, size_t elementCount) {
 	passed("testCoordinatesLen");
 }
 
-void testCoordinatesRange(std::vector<float>& coords) {
+void testCoordinatesRange(chm::FloatVec& coords) {
 	auto len = coords.size();
 
 	for(size_t i = 0; i < len; i++) {
@@ -42,9 +42,9 @@ void testCoordinatesRange(std::vector<float>& coords) {
 	passed("testCoordinatesRange");
 }
 
-void testQueryForThemselves(chm::Bruteforce& bruteforce, std::vector<float>& nodeCoords) {
-	std::vector<std::vector<size_t>> resultIDs;
-	std::vector<std::vector<float>> resultDistances;
+void testQueryForThemselves(chm::Bruteforce& bruteforce, chm::FloatVec& nodeCoords) {
+	chm::IDVec2D resultIDs;
+	chm::FloatVec2D resultDistances;
 
 	bruteforce.search(nodeCoords.data(), NODE_COUNT, 1, resultIDs, resultDistances);
 
@@ -68,7 +68,7 @@ void testQueryForThemselves(chm::Bruteforce& bruteforce, std::vector<float>& nod
 int main() {
 	try {
 		chm::ElementGenerator gen(ELEMENT_MIN, ELEMENT_MAX, ELEMENT_SEED);
-		std::vector<float> nodeCoords;
+		chm::FloatVec nodeCoords;
 		gen.fill(nodeCoords, DIM, NODE_COUNT);
 
 		testCoordinatesLen(nodeCoords, NODE_COUNT);
