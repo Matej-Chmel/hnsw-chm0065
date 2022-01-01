@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 namespace chm {
-	class Graph {
+	class Graph : public Unique {
 	public:
 		size_t efConstruction;
 		size_t M;

@@ -1,9 +1,10 @@
 #pragma once
 #include "FurthestComparator.hpp"
 #include "NodeDistance.hpp"
+#include "Unique.hpp"
 
 namespace chm {
-	class FurthestHeap {
+	class FurthestHeap : public Unique {
 		FurthestComparator cmp;
 
 	public:

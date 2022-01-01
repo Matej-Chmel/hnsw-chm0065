@@ -2,9 +2,10 @@
 #include "NearestComparator.hpp"
 #include "NodeDistance.hpp"
 #include "types.hpp"
+#include "Unique.hpp"
 
 namespace chm {
-	class NearestHeap {
+	class NearestHeap : public Unique {
 		NearestComparator cmp;
 
 	public:

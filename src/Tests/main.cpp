@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <iostream>
+#include <unordered_set>
 #include "AppError.hpp"
 #include "Bruteforce.hpp"
 #include "ElementGenerator.hpp"
@@ -79,6 +80,30 @@ void testQueryForThemselves(chm::Graph& hnsw, chm::FloatVec& nodeCoords) {
 	passed("testQueryForThemselves(HNSW)");
 }
 
+void testSingleLayerDuplicates(chm::Graph& hnsw) {
+	for(size_t nodeID = 0; nodeID < NODE_COUNT; nodeID++) {
+		auto& nodeLayers = hnsw.layers[nodeID];
+		auto nodeLayersLen = nodeLayers.size();
+
+		for(size_t layerID = 0; layerID < nodeLayersLen; layerID++) {
+			auto& layer = nodeLayers[layerID];
+			std::unordered_set<size_t> neighbors;
+			neighbors.reserve(layer.size());
+
+			for(auto& neighborID : layer)
+				if(neighbors.find(neighborID) == neighbors.end())
+					neighbors.insert(neighborID);
+				else
+					throw chm::AppError(
+						"Element "_f << neighborID << " is duplicated in layer " << layerID <<
+						" for element " << nodeID << '.'
+					);
+		}
+	}
+
+	passed("testSingleLayerDuplicates");
+}
+
 int main() {
 	try {
 		chm::ElementGenerator gen(ELEMENT_MIN, ELEMENT_MAX, ELEMENT_SEED);
@@ -93,7 +118,9 @@ int main() {
 
 		chm::Graph hnsw(LEVEL_SEED, false);
 		hnsw.build(nodeCoords.data(), DIM, NODE_COUNT);
+
 		testQueryForThemselves(hnsw, nodeCoords);
+		testSingleLayerDuplicates(hnsw);
 
 	} catch(chm::AppError& e) {
 		std::cout << e.what() << '\n';

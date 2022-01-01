@@ -3,7 +3,7 @@
 #include "NearestHeap.hpp"
 
 namespace chm {
-	class DynamicList {
+	class DynamicList : public Unique {
 		void clear();
 
 	public:

@@ -1,9 +1,10 @@
 #pragma once
 #include <random>
 #include "types.hpp"
+#include "Unique.hpp"
 
 namespace chm {
-	class ElementGenerator {
+	class ElementGenerator : public Unique {
 		std::default_random_engine gen;
 		std::uniform_real_distribution<float> dist;
 
