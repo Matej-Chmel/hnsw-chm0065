@@ -174,11 +174,8 @@ namespace chm {
 
 	void Graph::initLayers(size_t queryID, size_t level) {
 		size_t nLayers = level + 1;
-
 		auto& qLayers = this->layers[queryID];
-
-		for(size_t i = 0; i < nLayers; i++)
-			qLayers.push_back(std::vector<size_t>());
+		qLayers.resize(nLayers);
 	}
 
 	void Graph::calcML() {
