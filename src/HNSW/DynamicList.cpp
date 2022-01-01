@@ -16,7 +16,7 @@ namespace chm {
 	}
 
 	void DynamicList::fillResults(size_t K, std::vector<size_t>& outIDs, std::vector<float>& outDistances) {
-		size_t len = (K > this->size()) ? K : this->size();
+		size_t len = std::min(K, this->size());
 		outIDs.reserve(len);
 		outDistances.reserve(len);
 

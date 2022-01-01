@@ -3,6 +3,7 @@
 #include "AppError.hpp"
 #include "Bruteforce.hpp"
 #include "ElementGenerator.hpp"
+#include "Graph.hpp"
 #include "literals.hpp"
 using namespace chm::literals;
 
@@ -10,7 +11,9 @@ constexpr size_t DIM = 128;
 constexpr auto ELEMENT_MAX = 1.f;
 constexpr auto ELEMENT_MIN = 0.f;
 constexpr unsigned int ELEMENT_SEED = 100;
+constexpr unsigned int LEVEL_SEED = 100;
 constexpr size_t NODE_COUNT = 100;
+constexpr size_t SEARCH_EF = 10;
 
 void passed(const char* name) {
 	std::cout << name << " PASSED\n";
@@ -42,12 +45,7 @@ void testCoordinatesRange(chm::FloatVec& coords) {
 	passed("testCoordinatesRange");
 }
 
-void testQueryForThemselves(chm::Bruteforce& bruteforce, chm::FloatVec& nodeCoords) {
-	chm::IDVec2D resultIDs;
-	chm::FloatVec2D resultDistances;
-
-	bruteforce.search(nodeCoords.data(), NODE_COUNT, 1, resultIDs, resultDistances);
-
+void testQueryForThemselves(chm::IDVec2D& resultIDs, chm::FloatVec2D& resultDistances) {
 	for(size_t i = 0; i < NODE_COUNT; i++) {
 		auto& IDs = resultIDs[i];
 		auto& distances = resultDistances[i];
@@ -61,8 +59,24 @@ void testQueryForThemselves(chm::Bruteforce& bruteforce, chm::FloatVec& nodeCoor
 		if(distances[0] != 0.f)
 			throw chm::AppError("Distance is not 0 for element "_f << i << '.');
 	}
+}
 
+void testQueryForThemselves(chm::Bruteforce& bruteforce, chm::FloatVec& nodeCoords) {
+	chm::IDVec2D resultIDs;
+	chm::FloatVec2D resultDistances;
+
+	bruteforce.search(nodeCoords.data(), NODE_COUNT, 1, resultIDs, resultDistances);
+	testQueryForThemselves(resultIDs, resultDistances);
 	passed("testQueryForThemselves(bruteforce)");
+}
+
+void testQueryForThemselves(chm::Graph& hnsw, chm::FloatVec& nodeCoords) {
+	chm::IDVec2D resultIDs;
+	chm::FloatVec2D resultDistances;
+
+	hnsw.search(nodeCoords.data(), NODE_COUNT, 1, SEARCH_EF, resultIDs, resultDistances);
+	testQueryForThemselves(resultIDs, resultDistances);
+	passed("testQueryForThemselves(HNSW)");
 }
 
 int main() {
@@ -76,6 +90,10 @@ int main() {
 
 		chm::Bruteforce bruteforce(nodeCoords.data(), DIM, NODE_COUNT);
 		testQueryForThemselves(bruteforce, nodeCoords);
+
+		chm::Graph hnsw(LEVEL_SEED, false);
+		hnsw.build(nodeCoords.data(), DIM, NODE_COUNT);
+		testQueryForThemselves(hnsw, nodeCoords);
 
 	} catch(chm::AppError& e) {
 		std::cout << e.what() << '\n';

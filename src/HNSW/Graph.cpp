@@ -218,8 +218,10 @@ namespace chm {
 		this->layers.resize(count);
 		this->initLayers(this->entryID, this->entryLevel);
 
-		for (size_t i = 1; i < count; i++)
+		for(size_t i = 1; i < count; i++) {
+			this->distances.clear();
 			this->insert(i);
+		}
 	}
 
 	void Graph::search(float* queryCoords, size_t queryCount, size_t K, size_t ef, IDVec2D& outIDs, FloatVec2D& outDistances) {
@@ -227,7 +229,9 @@ namespace chm {
 		outDistances.resize(queryCount);
 		this->queryCoords = queryCoords;
 
-		for (size_t i = 0; i < queryCount; i++)
+		for(size_t i = 0; i < queryCount; i++) {
+			this->distances.clear();
 			this->knnSearch(i, K, ef, outIDs[i], outDistances[i]);
+		}
 	}
 }
