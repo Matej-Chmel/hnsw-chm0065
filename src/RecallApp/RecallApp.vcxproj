@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{c5dc5769-6ea7-4c1c-b099-d5168da3f6dc}</ProjectGuid>
-    <RootNamespace>Tests</RootNamespace>
+    <ProjectGuid>{bc35af16-7443-497f-8905-d3763289e7a7}</ProjectGuid>
+    <RootNamespace>RecallApp</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -61,25 +61,21 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\res\props\C++17.props" />
     <Import Project="..\res\props\Include HNSW.props" />
-    <Import Project="..\res\props\SolutionDir C++ Macro.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\res\props\C++17.props" />
     <Import Project="..\res\props\Include HNSW.props" />
-    <Import Project="..\res\props\SolutionDir C++ Macro.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\res\props\C++17.props" />
     <Import Project="..\res\props\Include HNSW.props" />
-    <Import Project="..\res\props\SolutionDir C++ Macro.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\res\props\C++17.props" />
     <Import Project="..\res\props\Include HNSW.props" />
-    <Import Project="..\res\props\SolutionDir C++ Macro.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -151,40 +147,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Action.cpp" />
-    <ClCompile Include="ActionBuildBruteforce.cpp" />
-    <ClCompile Include="ActionBuildHNSW.cpp" />
-    <ClCompile Include="ActionGenerateElements.cpp" />
-    <ClCompile Include="CommonState.cpp" />
-    <ClCompile Include="forEachLayer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Runner.cpp" />
-    <ClCompile Include="TestConnectionWithItself.cpp" />
-    <ClCompile Include="TestCoordinatesLength.cpp" />
-    <ClCompile Include="TestCoordinatesRange.cpp" />
-    <ClCompile Include="TestDataReader.cpp" />
-    <ClCompile Include="TestQueryItself.cpp" />
-    <ClCompile Include="TestSingleLayerDuplicates.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HNSW\HNSW.vcxproj">
       <Project>{9fe61a51-084a-46dc-8f51-7ee983f95a4a}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Action.hpp" />
-    <ClInclude Include="ActionBuildBruteforce.hpp" />
-    <ClInclude Include="ActionBuildHNSW.hpp" />
-    <ClInclude Include="ActionGenerateElements.hpp" />
-    <ClInclude Include="CommonState.hpp" />
-    <ClInclude Include="forEachLayer.hpp" />
-    <ClInclude Include="Runner.hpp" />
-    <ClInclude Include="TestConnectionWithItself.hpp" />
-    <ClInclude Include="TestCoordinatesLength.hpp" />
-    <ClInclude Include="TestCoordinatesRange.hpp" />
-    <ClInclude Include="TestDataReader.hpp" />
-    <ClInclude Include="TestQueryItself.hpp" />
-    <ClInclude Include="TestSingleLayerDuplicates.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

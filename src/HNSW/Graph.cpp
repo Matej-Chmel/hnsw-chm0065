@@ -237,7 +237,13 @@ namespace chm {
 		}
 	}
 
-	void Graph::search(float* queryCoords, size_t queryCount, size_t K, size_t ef, IDVec2D& outIDs, FloatVec2D& outDistances) {
+	void Graph::search(
+		float* queryCoords, size_t queryCount, size_t K, size_t ef,
+		IDVec2D& outIDs, FloatVec2D& outDistances) {
+
+		if(!this->coords)
+			throw AppError("No elements in the graph. Build the graph before searching.");
+
 		outIDs.resize(queryCount);
 		outDistances.resize(queryCount);
 		this->queryCoords = queryCoords;

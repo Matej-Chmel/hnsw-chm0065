@@ -43,7 +43,10 @@ namespace chm {
 		Graph(const Config& cfg, size_t seed, bool rndSeed);
 
 		void build(float* coords, size_t count);
-		void search(float* queryCoords, size_t queryCount, size_t K, size_t ef, IDVec2D& outIDs, FloatVec2D& outDistances);
+		void search(
+			float* queryCoords, size_t queryCount, size_t K, size_t ef,
+			IDVec2D& outIDs, FloatVec2D& outDistances
+		);
 
 		size_t getNodeCount();
 		void printLayers(std::ostream& s);
