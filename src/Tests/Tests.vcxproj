@@ -147,12 +147,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Action.cpp" />
+    <ClCompile Include="ActionBuildBruteforce.cpp" />
+    <ClCompile Include="ActionBuildHNSW.cpp" />
+    <ClCompile Include="ActionGenerateElements.cpp" />
+    <ClCompile Include="CommonState.cpp" />
+    <ClCompile Include="forEachLayer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Runner.cpp" />
+    <ClCompile Include="TestConnectionWithItself.cpp" />
+    <ClCompile Include="TestCoordinatesLength.cpp" />
+    <ClCompile Include="TestCoordinatesRange.cpp" />
+    <ClCompile Include="TestQueryItself.cpp" />
+    <ClCompile Include="TestSingleLayerDuplicates.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HNSW\HNSW.vcxproj">
       <Project>{9fe61a51-084a-46dc-8f51-7ee983f95a4a}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Action.hpp" />
+    <ClInclude Include="ActionBuildBruteforce.hpp" />
+    <ClInclude Include="ActionBuildHNSW.hpp" />
+    <ClInclude Include="ActionGenerateElements.hpp" />
+    <ClInclude Include="CommonState.hpp" />
+    <ClInclude Include="forEachLayer.hpp" />
+    <ClInclude Include="Runner.hpp" />
+    <ClInclude Include="TestConnectionWithItself.hpp" />
+    <ClInclude Include="TestCoordinatesLength.hpp" />
+    <ClInclude Include="TestCoordinatesRange.hpp" />
+    <ClInclude Include="TestQueryItself.hpp" />
+    <ClInclude Include="TestSingleLayerDuplicates.hpp" />
+    <ClInclude Include="Timer.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

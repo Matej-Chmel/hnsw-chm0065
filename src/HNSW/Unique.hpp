@@ -6,6 +6,7 @@ namespace chm {
 		Unique() = default;
 
 	public:
+		virtual ~Unique() = default;
 		Unique& operator=(const Unique&) = delete;
 		Unique& operator=(Unique&&) = delete;
 		Unique(const Unique&) = delete;
