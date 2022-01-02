@@ -18,11 +18,12 @@ namespace chm {
 		void keepNearest(size_t K);
 		NearestHeap();
 		NearestHeap(NearestHeap& other);
-		NearestHeap(NodeDistanceVec& ep);
 		void push(float distance, size_t nodeID);
 		NodeDistance pop();
 		void remove(size_t nodeID);
+		void reserve(size_t s);
 		size_t size();
+		void swap(NearestHeap& other);
 		NodeDistance& top();
 	};
 }

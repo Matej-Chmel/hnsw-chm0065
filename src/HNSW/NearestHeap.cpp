@@ -14,7 +14,7 @@ namespace chm {
 		layer.clear();
 		layer.reserve(this->nodes.size());
 
-		for (auto& item : this->nodes)
+		for(auto& item : this->nodes)
 			layer.push_back(item.nodeID);
 	}
 
@@ -41,11 +41,6 @@ namespace chm {
 		this->copyFrom(other);
 	}
 
-	NearestHeap::NearestHeap(NodeDistanceVec& ep) {
-		this->nodes = ep;
-		std::make_heap(this->nodes.begin(), this->nodes.end(), this->cmp);
-	}
-
 	void NearestHeap::push(float distance, size_t nodeID) {
 		this->nodes.push_back({distance, nodeID});
 		std::push_heap(this->nodes.begin(), this->nodes.end(), this->cmp);
@@ -61,10 +56,10 @@ namespace chm {
 	void NearestHeap::remove(size_t nodeID) {
 		auto len = this->nodes.size();
 
-		for (size_t i = 0; i < len; i++) {
+		for(size_t i = 0; i < len; i++) {
 			auto& item = this->nodes[i];
 
-			if (item.nodeID == nodeID) {
+			if(item.nodeID == nodeID) {
 				this->nodes.erase(this->nodes.begin() + i);
 				std::make_heap(this->nodes.begin(), this->nodes.end(), this->cmp);
 				break;
@@ -72,8 +67,16 @@ namespace chm {
 		}
 	}
 
+	void NearestHeap::reserve(size_t s) {
+		this->nodes.reserve(s);
+	}
+
 	size_t NearestHeap::size() {
 		return this->nodes.size();
+	}
+
+	void NearestHeap::swap(NearestHeap& other) {
+		this->nodes.swap(other.nodes);
 	}
 
 	NodeDistance& NearestHeap::top() {

@@ -20,7 +20,7 @@ namespace chm {
 		outIDs.reserve(len);
 		outDistances.reserve(len);
 
-		for (size_t i = 0; i < len; i++) {
+		for(size_t i = 0; i < len; i++) {
 			auto& item = this->nearestHeap.top();
 
 			outIDs.push_back(item.nodeID);

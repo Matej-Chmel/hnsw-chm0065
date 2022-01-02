@@ -6,7 +6,7 @@ namespace chm {
 		float* nodeCoords = this->coords + nodeID * this->dim;
 		float result = 0.f;
 
-		for (size_t i = 0; i < this->dim; i++) {
+		for(size_t i = 0; i < this->dim; i++) {
 			float diff = nodeCoords[i] - query[i];
 			result += diff * diff;
 		}
@@ -26,15 +26,15 @@ namespace chm {
 			outIDs[i] = i;
 		}
 
-		Comparator cmp{ this };
+		Comparator cmp{this};
 		std::sort(outIDs.begin(), outIDs.end(), cmp);
 
-		if (this->count > K)
+		if(this->count > K)
 			outIDs.erase(outIDs.begin() + K, outIDs.end());
 
 		outDistances.reserve(K);
 
-		for (auto& id : outIDs)
+		for(auto& id : outIDs)
 			outDistances.push_back(this->distances[id]);
 	}
 
@@ -42,7 +42,7 @@ namespace chm {
 		outIDs.resize(queryCount);
 		outDistances.resize(queryCount);
 
-		for (size_t i = 0; i < queryCount; i++)
+		for(size_t i = 0; i < queryCount; i++)
 			this->search(queryCoords + i * this->dim, K, outIDs[i], outDistances[i]);
 	}
 

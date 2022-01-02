@@ -147,13 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AppError.cpp" />
-    <ClCompile Include="literals.cpp" />
     <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="AppError.hpp" />
-    <ClInclude Include="literals.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HNSW\HNSW.vcxproj">

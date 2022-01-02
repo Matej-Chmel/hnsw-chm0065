@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <functional>
 #include <iostream>
 #include <unordered_set>
 #include "AppError.hpp"
@@ -16,8 +17,33 @@ constexpr unsigned int LEVEL_SEED = 100;
 constexpr size_t NODE_COUNT = 100;
 constexpr size_t SEARCH_EF = 10;
 
+typedef std::function<void(chm::IDVec& layer, size_t layerID, size_t nodeID)> LayerFunc;
+
+void forEachLayer(chm::Graph& hnsw, LayerFunc f) {
+	auto count = hnsw.getNodeCount();
+
+	for(size_t nodeID = 0; nodeID < count; nodeID++) {
+		auto& nodeLayers = hnsw.layers[nodeID];
+		auto nodeLayersLen = nodeLayers.size();
+
+		for(size_t layerID = 0; layerID < nodeLayersLen; layerID++) {
+			auto& layer = nodeLayers[layerID];
+			f(layer, layerID, nodeID);
+		}
+	}
+}
+
 void passed(const char* name) {
 	std::cout << name << " PASSED\n";
+}
+
+void testConnectionWithItself(chm::Graph& hnsw) {
+	forEachLayer(hnsw, [](chm::IDVec& layer, size_t layerID, size_t nodeID) {
+		for(auto& neighbor : layer)
+			if(neighbor == nodeID)
+				throw chm::AppError("Element "_f << nodeID << " is connected with itself at layer " << layerID << '.');
+	});
+	passed("testConnectionWithItself");
 }
 
 void testCoordinatesLen(chm::FloatVec& coords, size_t elementCount) {
@@ -81,26 +107,19 @@ void testQueryForThemselves(chm::Graph& hnsw, chm::FloatVec& nodeCoords) {
 }
 
 void testSingleLayerDuplicates(chm::Graph& hnsw) {
-	for(size_t nodeID = 0; nodeID < NODE_COUNT; nodeID++) {
-		auto& nodeLayers = hnsw.layers[nodeID];
-		auto nodeLayersLen = nodeLayers.size();
+	forEachLayer(hnsw, [](chm::IDVec& layer, size_t layerID, size_t nodeID) {
+		std::unordered_set<size_t> neighbors;
+		neighbors.reserve(layer.size());
 
-		for(size_t layerID = 0; layerID < nodeLayersLen; layerID++) {
-			auto& layer = nodeLayers[layerID];
-			std::unordered_set<size_t> neighbors;
-			neighbors.reserve(layer.size());
-
-			for(auto& neighborID : layer)
-				if(neighbors.find(neighborID) == neighbors.end())
-					neighbors.insert(neighborID);
-				else
-					throw chm::AppError(
-						"Element "_f << neighborID << " is duplicated in layer " << layerID <<
-						" for element " << nodeID << '.'
-					);
-		}
-	}
-
+		for(auto& neighborID : layer)
+			if(neighbors.find(neighborID) == neighbors.end())
+				neighbors.insert(neighborID);
+			else
+				throw chm::AppError(
+					"Element "_f << neighborID << " is duplicated in layer " << layerID <<
+					" for element " << nodeID << '.'
+				);
+	});
 	passed("testSingleLayerDuplicates");
 }
 
@@ -121,6 +140,9 @@ int main() {
 
 		testQueryForThemselves(hnsw, nodeCoords);
 		testSingleLayerDuplicates(hnsw);
+		testConnectionWithItself(hnsw);
+
+		hnsw.printLayers(std::cout);
 
 	} catch(chm::AppError& e) {
 		std::cout << e.what() << '\n';

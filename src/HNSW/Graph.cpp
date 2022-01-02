@@ -1,18 +1,21 @@
 #include <algorithm>
 #include <cmath>
 #include <unordered_set>
+#include "AppError.hpp"
+#include "literals.hpp"
 #include "Graph.hpp"
 
 namespace chm {
-	float Graph::getDistance(size_t nodeID, size_t queryID, bool inserting) {
-		auto iter = this->distances.find(nodeID);
+	float Graph::getDistance(size_t nodeID, size_t queryID, State s) {
+		if(s != State::SHRINKING) {
+			auto iter = this->distances.find(nodeID);
 
-		if(iter != this->distances.end())
-			return iter->second;
-
+			if(iter != this->distances.end())
+				return iter->second;
+		}
 
 		float* nodeCoords = this->coords + nodeID * this->dim;
-		float* qCoords = (inserting ? this->coords : this->queryCoords) + queryID * this->dim;
+		float* qCoords = (s == State::SEARCHING ? this->queryCoords : this->coords) + queryID * this->dim;
 
 		float distance = 0.f;
 
@@ -21,7 +24,9 @@ namespace chm {
 			distance += diff * diff;
 		}
 
-		this->distances[nodeID] = distance;
+		if(s != State::SHRINKING)
+			this->distances[nodeID] = distance;
+
 		return distance;
 	}
 
@@ -36,24 +41,24 @@ namespace chm {
 	}
 
 	void Graph::insert(size_t queryID) {
-		DynamicList W(this->getDistance(this->entryID, queryID, true), this->entryID);
+		DynamicList W(this->getDistance(this->entryID, queryID), this->entryID);
 		auto L = this->entryLevel;
 		auto l = this->getNewLevel();
 
 		this->initLayers(queryID, l);
 
 		for(size_t lc = L; lc > l; lc--) {
-			this->searchLayer(queryID, W, 1, lc, true);
+			this->searchLayer(queryID, W, 1, lc);
 			W.keepOnlyNearest();
 		}
 
 		for(size_t lc = std::min(L, l);; lc--) {
 			size_t layerMmax = (lc == 0) ? this->Mmax0 : this->Mmax;
 
-			this->searchLayer(queryID, W, this->efConstruction, lc, true);
+			this->searchLayer(queryID, W, this->efConstruction, lc);
 
-			NearestHeap neighbors;
-			this->selectNeighbors(queryID, W, this->M, lc, neighbors);
+			NearestHeap neighbors(W.nearestHeap);
+			this->selectNeighbors(queryID, neighbors, this->M, lc);
 			this->connect(queryID, neighbors, lc);
 
 			for(auto& e : neighbors.nodes) {
@@ -61,7 +66,9 @@ namespace chm {
 
 				if(eConn.size() > layerMmax) {
 					NearestHeap eNewConn;
-					this->selectNeighbors(queryID, W, layerMmax, lc, eNewConn);
+					this->fillHeap(e.nodeID, eConn, eNewConn);
+
+					this->selectNeighbors(e.nodeID, eNewConn, layerMmax, lc, State::SHRINKING);
 					eNewConn.fillLayer(eConn);
 				}
 			}
@@ -76,7 +83,7 @@ namespace chm {
 		}
 	}
 
-	void Graph::searchLayer(size_t queryID, DynamicList& W, size_t ef, size_t lc, bool inserting) {
+	void Graph::searchLayer(size_t queryID, DynamicList& W, size_t ef, size_t lc, State s) {
 		std::unordered_set<size_t> v;
 
 		for(auto& item : W.nearestHeap.nodes)
@@ -97,7 +104,7 @@ namespace chm {
 				if(v.find(eID) == v.end()) {
 					v.insert(eID);
 					f = W.furthest();
-					float eDistance = this->getDistance(eID, queryID, inserting);
+					float eDistance = this->getDistance(eID, queryID, s);
 
 					if(eDistance < f.distance || W.size() < ef) {
 						C.push(eDistance, eID);
@@ -111,65 +118,67 @@ namespace chm {
 		}
 	}
 
-	void Graph::selectNeighbors(size_t queryID, DynamicList& C, size_t M, size_t lc, NearestHeap& results) {
+	void Graph::selectNeighbors(size_t queryID, NearestHeap& outC, size_t M, size_t lc, State s) {
 		if(this->useHeuristic)
-			this->selectNeighborsHeuristic(queryID, C, M, lc, results);
+			this->selectNeighborsHeuristic(queryID, outC, M, lc, s);
 		else
-			this->selectNeighborsSimple(queryID, C, M, results);
+			this->selectNeighborsSimple(outC, M);
 	}
 
-	void Graph::selectNeighborsHeuristic(size_t queryID, DynamicList& C, size_t M, size_t lc, NearestHeap& results) {
-		NearestHeap W(C.nearestHeap);
+	void Graph::selectNeighborsHeuristic(size_t queryID, NearestHeap& outC, size_t M, size_t lc, State s) {
+		NearestHeap R;
+		auto& W = outC;
 
 		if(this->extendCandidates) {
 			std::unordered_set<size_t> visited;
 
-			for(auto& e : C.nearestHeap.nodes) {
+			for(auto& e : outC.nodes) {
 				auto& neighbors = this->layers[e.nodeID][lc];
 
-				for(auto& eAdjID : neighbors) {
-					if(visited.find(eAdjID) == visited.end()) {
+				for(auto& eAdjID : neighbors)
+					if(visited.find(eAdjID) == visited.end())
 						visited.insert(eAdjID);
-						W.push(this->getDistance(eAdjID, queryID, true), eAdjID);
-					}
-				}
 			}
+
+			for(const auto& ID : visited)
+				W.push(this->getDistance(ID, queryID, s), ID);
 		}
 
 		NearestHeap Wd;
 
-		while(W.size() > 0 && results.size() < M) {
+		while(W.size() > 0 && R.size() < M) {
 			auto e = W.pop();
 
-			if(results.isCloserThanAny(e))
-				results.push(e.distance, e.nodeID);
+			if(R.isCloserThanAny(e))
+				R.push(e.distance, e.nodeID);
 			else if(this->keepPrunedConnections)
 				Wd.push(e.distance, e.nodeID);
 		}
 
 		if(this->keepPrunedConnections) {
-			while(Wd.size() > 0 && results.size() < M) {
+			while(Wd.size() > 0 && R.size() < M) {
 				auto discardedNearest = Wd.pop();
-				results.push(discardedNearest.distance, discardedNearest.nodeID);
+				R.push(discardedNearest.distance, discardedNearest.nodeID);
 			}
 		}
+
+		outC.swap(R);
 	}
 
-	void Graph::selectNeighborsSimple(size_t queryID, DynamicList& C, size_t M, NearestHeap& results) {
-		results.copyFrom(C.nearestHeap);
-		results.keepNearest(M);
+	void Graph::selectNeighborsSimple(NearestHeap& outC, size_t M) {
+		outC.keepNearest(M);
 	}
 
 	void Graph::knnSearch(size_t queryID, size_t K, size_t ef, IDVec& outIDs, FloatVec& outDistances) {
-		DynamicList W(this->getDistance(this->entryID, queryID, false), this->entryID);
+		DynamicList W(this->getDistance(this->entryID, queryID, State::SEARCHING), this->entryID);
 		auto L = this->entryLevel;
 
-		for (size_t lc = L; lc > 0; lc--) {
-			this->searchLayer(queryID, W, 1, lc, false);
+		for(size_t lc = L; lc > 0; lc--) {
+			this->searchLayer(queryID, W, 1, lc, State::SEARCHING);
 			W.keepOnlyNearest();
 		}
 
-		this->searchLayer(queryID, W, ef, 0, false);
+		this->searchLayer(queryID, W, ef, 0, State::SEARCHING);
 		W.fillResults(K, outIDs, outDistances);
 	}
 
@@ -177,11 +186,21 @@ namespace chm {
 		auto& qLayer = this->layers[queryID][lc];
 
 		for(auto& item : neighbors.nodes) {
+			if(queryID == item.nodeID)
+				throw AppError("Tried to connect element "_f << queryID << " with itself at layer " << lc << '.');
+
 			qLayer.push_back(item.nodeID);
 
 			auto& itemLayer = this->layers[item.nodeID][lc];
 			itemLayer.push_back(queryID);
 		}
+	}
+
+	void Graph::fillHeap(size_t queryID, IDVec& eConn, NearestHeap& eNewConn) {
+		eNewConn.reserve(eConn.size());
+
+		for(auto& ID : eConn)
+			eNewConn.push(this->getDistance(ID, queryID, State::SHRINKING), ID);
 	}
 
 	void Graph::initLayers(size_t queryID, size_t level) {
@@ -232,6 +251,40 @@ namespace chm {
 		for(size_t i = 0; i < queryCount; i++) {
 			this->distances.clear();
 			this->knnSearch(i, K, ef, outIDs[i], outDistances[i]);
+		}
+	}
+
+	size_t Graph::getNodeCount() {
+		return this->layers.size();
+	}
+
+	void Graph::printLayers(std::ostream& o) {
+		auto count = this->getNodeCount();
+		auto lastID = count - 1;
+
+		for(size_t nodeID = 0; nodeID < count; nodeID++) {
+			o << "Node " << nodeID << '\n';
+
+			auto& nodeLayers = this->layers[nodeID];
+			auto nodeLayersLen = nodeLayers.size();
+
+			for(size_t layerID = 0; layerID < nodeLayersLen; layerID++) {
+				o << "Layer " << layerID << ": ";
+
+				auto& layer = nodeLayers[layerID];
+				auto lastIdx = layer.size() - 1;
+
+				IDVec sortedLayer(layer);
+				std::sort(sortedLayer.begin(), sortedLayer.end());
+
+				for(size_t i = 0; i < lastIdx; i++)
+					o << sortedLayer[i] << ' ';
+
+				o << sortedLayer[lastIdx] << '\n';
+			}
+
+			if(nodeID != lastID)
+				o << '\n';
 		}
 	}
 }
