@@ -28,11 +28,28 @@ struct Result {
 			"\nBuild time: " << this->buildTimeMS <<
 			" ms\nSearch time: " << this->searchTimeMS << " ms\n";
 	}
+
+	void printRecall(Result& trueRes) {
+		std::cout << "Recall: " << chm::recall(this->IDs, trueRes.IDs, K * QUERY_COUNT) << '\n';
+	}
 };
+
+void runHNSW(
+	const chm::Config& cfg, chm::FloatVec& nodeCoords, chm::FloatVec& queryCoords, Result& res, chm::Timer& timer
+) {
+	timer.start();
+	chm::Graph hnsw(cfg, LEVEL_SEED, false);
+	hnsw.build(nodeCoords.data(), NODE_COUNT);
+	res.buildTimeMS = timer.stop();
+
+	timer.start();
+	hnsw.search(queryCoords.data(), QUERY_COUNT, K, SEARCH_EF, res.IDs, res.distances);
+	res.searchTimeMS = timer.stop();
+}
 
 int main() {
 	try {
-		Result bfRes, hnswRes;
+		Result bfRes, hnswSimpleRes, hnswHeuristicRes;
 		chm::ElementGenerator gen(ELEMENT_MIN, ELEMENT_MAX, ELEMENT_SEED);
 		chm::FloatVec nodeCoords, queryCoords;
 		chm::Timer timer;
@@ -48,21 +65,17 @@ int main() {
 		bf.search(queryCoords.data(), QUERY_COUNT, K, bfRes.IDs, bfRes.distances);
 		bfRes.searchTimeMS = timer.stop();
 
-		timer.start();
-		chm::Graph hnsw(chm::Config(DIM), LEVEL_SEED, false);
-		hnsw.build(nodeCoords.data(), NODE_COUNT);
-		hnswRes.buildTimeMS = timer.stop();
-
-		timer.start();
-		hnsw.search(queryCoords.data(), QUERY_COUNT, K, SEARCH_EF, hnswRes.IDs, hnswRes.distances);
-		hnswRes.searchTimeMS = timer.stop();
-
-		auto recall = chm::recall(hnswRes.IDs, bfRes.IDs, K * QUERY_COUNT);
+		runHNSW(chm::Config(DIM).setHeuristic(), nodeCoords, queryCoords, hnswHeuristicRes, timer);
+		runHNSW(chm::Config(DIM), nodeCoords, queryCoords, hnswSimpleRes, timer);
 
 		bfRes.print("Bruteforce");
 		std::cout << '\n';
-		hnswRes.print("HNSW(simple)");
-		std::cout << "Recall: " << recall << '\n';
+		hnswHeuristicRes.print("HNSW(heuristic)");
+		hnswHeuristicRes.printRecall(bfRes);
+		std::cout << '\n';
+		hnswSimpleRes.print("HNSW(simple)");
+		hnswSimpleRes.printRecall(bfRes);
+		
 
 	} catch(chm::AppError& e) {
 		std::cout << e.what() << '\n';
