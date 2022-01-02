@@ -1,6 +1,7 @@
 #pragma once
 #include "Bruteforce.hpp"
 #include "ElementGenerator.hpp"
+#include "filesystem.hpp"
 #include "Graph.hpp"
 #include "Unique.hpp"
 
@@ -15,10 +16,12 @@ namespace chm {
 
 	struct CommonState : public Unique {
 		Bruteforce* bruteforce;
+		fs::path dataDir;
 		ElementGenerator* gen;
 		Graph* hnsw;
 		FloatVec* nodeCoords;
 
 		~CommonState();
+		CommonState();
 	};
 }

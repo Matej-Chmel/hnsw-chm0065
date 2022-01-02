@@ -7,6 +7,7 @@
 #include "TestConnectionWithItself.hpp"
 #include "TestCoordinatesLength.hpp"
 #include "TestCoordinatesRange.hpp"
+#include "TestDataReader.hpp"
 #include "TestQueryItself.hpp"
 #include "TestSingleLayerDuplicates.hpp"
 
@@ -47,6 +48,7 @@ namespace chm {
 			new ActionGenerateElements(),
 			new TestCoordinatesLength(),
 			new TestCoordinatesRange(),
+			new TestDataReader(),
 			new ActionBuildBruteforce(),
 			new TestQueryItself(true),
 			new ActionBuildHNSW(Config(DIM)),
@@ -54,9 +56,9 @@ namespace chm {
 			new TestSingleLayerDuplicates(),
 			new TestConnectionWithItself(),
 			new ActionBuildHNSW(Config(DIM).setHeuristic()),
-			new TestQueryItself(false),
 			new TestSingleLayerDuplicates(),
-			new TestConnectionWithItself()
+			new TestConnectionWithItself(),
+			new TestQueryItself(false)
 		};
 	}
 }

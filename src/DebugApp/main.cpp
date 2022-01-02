@@ -1,8 +1,8 @@
-#include <filesystem>
 #include <fstream>
 #include "ElementGenerator.hpp"
+#include "filesystem.hpp"
 #include "Graph.hpp"
-namespace fs = std::filesystem;
+namespace fs = chm::fs;
 
 constexpr size_t DIM = 128;
 constexpr auto ELEMENT_MAX = 1.f;
@@ -25,9 +25,7 @@ void run(const fs::path& logsDir, const char* logName, bool useHeuristic, chm::F
 
 int main() {
 	auto logsDir = fs::path(SOLUTION_DIR) / "logs";
-
-	if(!fs::exists(logsDir))
-		fs::create_directory(logsDir);
+	chm::ensureDir(logsDir);
 
 	chm::ElementGenerator gen(ELEMENT_MIN, ELEMENT_MAX, ELEMENT_SEED);
 	chm::FloatVec nodeCoords;

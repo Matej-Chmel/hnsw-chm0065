@@ -61,21 +61,25 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\res\props\C++17.props" />
     <Import Project="..\res\props\Include HNSW.props" />
+    <Import Project="..\res\props\SolutionDir C++ Macro.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\res\props\C++17.props" />
     <Import Project="..\res\props\Include HNSW.props" />
+    <Import Project="..\res\props\SolutionDir C++ Macro.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\res\props\C++17.props" />
     <Import Project="..\res\props\Include HNSW.props" />
+    <Import Project="..\res\props\SolutionDir C++ Macro.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\res\props\C++17.props" />
     <Import Project="..\res\props\Include HNSW.props" />
+    <Import Project="..\res\props\SolutionDir C++ Macro.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -158,6 +162,7 @@
     <ClCompile Include="TestConnectionWithItself.cpp" />
     <ClCompile Include="TestCoordinatesLength.cpp" />
     <ClCompile Include="TestCoordinatesRange.cpp" />
+    <ClCompile Include="TestDataReader.cpp" />
     <ClCompile Include="TestQueryItself.cpp" />
     <ClCompile Include="TestSingleLayerDuplicates.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -178,6 +183,7 @@
     <ClInclude Include="TestConnectionWithItself.hpp" />
     <ClInclude Include="TestCoordinatesLength.hpp" />
     <ClInclude Include="TestCoordinatesRange.hpp" />
+    <ClInclude Include="TestDataReader.hpp" />
     <ClInclude Include="TestQueryItself.hpp" />
     <ClInclude Include="TestSingleLayerDuplicates.hpp" />
     <ClInclude Include="Timer.hpp" />

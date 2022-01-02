@@ -22,8 +22,10 @@
     <ClInclude Include="AppError.hpp" />
     <ClInclude Include="Bruteforce.hpp" />
     <ClInclude Include="Config.hpp" />
+    <ClInclude Include="DataReader.hpp" />
     <ClInclude Include="DynamicList.hpp" />
     <ClInclude Include="ElementGenerator.hpp" />
+    <ClInclude Include="filesystem.hpp" />
     <ClInclude Include="FurthestComparator.hpp" />
     <ClInclude Include="FurthestHeap.hpp" />
     <ClInclude Include="Graph.hpp" />
@@ -40,8 +42,10 @@
     <ClCompile Include="AppError.cpp" />
     <ClCompile Include="Bruteforce.cpp" />
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="DataReader.cpp" />
     <ClCompile Include="DynamicList.cpp" />
     <ClCompile Include="ElementGenerator.cpp" />
+    <ClCompile Include="filesystem.cpp" />
     <ClCompile Include="FurthestHeap.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="literals.cpp" />
