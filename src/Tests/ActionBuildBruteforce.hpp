@@ -5,7 +5,7 @@ namespace chm {
 	class ActionBuildBruteforce : public Action {
 	public:
 		ActionBuildBruteforce();
-		void run(CommonState* s) override;
+		void run() override;
 		std::string text(long long elapsedMS) override;
 	};
 }

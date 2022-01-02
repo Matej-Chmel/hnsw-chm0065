@@ -4,7 +4,7 @@
 namespace chm {
 	class TestCoordinatesRange : public Action {
 	public:
-		void run(CommonState* s) override;
+		void run() override;
 		std::string text(long long elapsedMS) override;
 	};
 }

@@ -6,7 +6,7 @@ namespace chm {
 		bool bruteforce;
 
 	public:
-		void run(CommonState* s) override;
+		void run() override;
 		TestQueryItself(bool bruteforce);
 		std::string text(long long elapsedMS) override;
 	};

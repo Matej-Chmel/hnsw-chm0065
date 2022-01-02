@@ -3,8 +3,8 @@
 #include "TestCoordinatesLength.hpp"
 
 namespace chm {
-	void TestCoordinatesLength::run(CommonState* s) {
-		auto actualLen = s->nodeCoords->size();
+	void TestCoordinatesLength::run() {
+		auto actualLen = this->s->nodeCoords->size();
 		auto expectedLen = NODE_COUNT * DIM;
 
 		if(actualLen != expectedLen)

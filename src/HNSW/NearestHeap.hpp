@@ -12,7 +12,6 @@ namespace chm {
 		NodeDistanceVec nodes;
 
 		void clear();
-		void copyFrom(NearestHeap& other);
 		void fillLayer(IDVec& layer);
 		bool isCloserThanAny(NodeDistance& node);
 		void keepNearest(size_t K);

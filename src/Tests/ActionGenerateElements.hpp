@@ -5,7 +5,7 @@ namespace chm {
 	class ActionGenerateElements : public Action {
 	public:
 		ActionGenerateElements();
-		void run(CommonState* s) override;
+		void run() override;
 		std::string text(long long elapsedMS) override;
 	};
 }

@@ -3,14 +3,14 @@
 #include "TestQueryItself.hpp"
 
 namespace chm {
-	void TestQueryItself::run(CommonState* s) {
+	void TestQueryItself::run() {
 		IDVec2D resultIDs;
 		FloatVec2D resultDistances;
 
 		if(this->bruteforce)
-			s->bruteforce->search(s->nodeCoords->data(), NODE_COUNT, 1, resultIDs, resultDistances);
+			this->s->bruteforce->search(this->s->nodeCoords->data(), NODE_COUNT, 1, resultIDs, resultDistances);
 		else
-			s->hnsw->search(s->nodeCoords->data(), NODE_COUNT, 1, SEARCH_EF, resultIDs, resultDistances);
+			this->s->hnsw->search(this->s->nodeCoords->data(), NODE_COUNT, 1, SEARCH_EF, resultIDs, resultDistances);
 
 		for(size_t i = 0; i < NODE_COUNT; i++) {
 			auto& IDs = resultIDs[i];

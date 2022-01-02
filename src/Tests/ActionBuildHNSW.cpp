@@ -2,14 +2,18 @@
 #include "literals.hpp"
 
 namespace chm {
-	ActionBuildHNSW::ActionBuildHNSW() : Action(false) {}
+	ActionBuildHNSW::ActionBuildHNSW(const Config& cfg) : Action(false), cfg(cfg) {}
 
-	void ActionBuildHNSW::run(CommonState* s) {
-		s->hnsw = new Graph(LEVEL_SEED, false);
-		s->hnsw->build(s->nodeCoords->data(), DIM, NODE_COUNT);
+	void ActionBuildHNSW::run() {
+		delete this->s->hnsw;
+		this->s->hnsw = new Graph(this->cfg, LEVEL_SEED, false);
+		this->s->hnsw->build(this->s->nodeCoords->data(), NODE_COUNT);
 	}
 
 	std::string ActionBuildHNSW::text(long long elapsedMS) {
-		return ("HNSW graph built in "_f << elapsedMS << " ms.").str();
+		return (
+			"HNSW ("_f << (this->s->hnsw->cfg.useHeuristic ? "heuristic" : "simple") <<
+			") graph built in " << elapsedMS << " ms."
+		).str();
 	}
 }

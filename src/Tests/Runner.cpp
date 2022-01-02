@@ -12,8 +12,10 @@
 
 namespace chm {
 	void Runner::run(Action* a) {
+		a->setCommonState(&this->state);
+
 		this->timer.start();
-		a->run(&this->state);
+		a->run();
 		auto elapsedMS = this->timer.stop();
 
 		if(a->isTest)
@@ -47,7 +49,11 @@ namespace chm {
 			new TestCoordinatesRange(),
 			new ActionBuildBruteforce(),
 			new TestQueryItself(true),
-			new ActionBuildHNSW(),
+			new ActionBuildHNSW(Config(DIM)),
+			new TestQueryItself(false),
+			new TestSingleLayerDuplicates(),
+			new TestConnectionWithItself(),
+			new ActionBuildHNSW(Config(DIM).setHeuristic()),
 			new TestQueryItself(false),
 			new TestSingleLayerDuplicates(),
 			new TestConnectionWithItself()

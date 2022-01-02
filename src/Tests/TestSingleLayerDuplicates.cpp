@@ -5,8 +5,8 @@
 #include "TestSingleLayerDuplicates.hpp"
 
 namespace chm {
-	void TestSingleLayerDuplicates::run(CommonState* s) {
-		forEachLayer(*s->hnsw, [](chm::IDVec& layer, size_t layerID, size_t nodeID) {
+	void TestSingleLayerDuplicates::run() {
+		forEachLayer(*this->s->hnsw, [](chm::IDVec& layer, size_t layerID, size_t nodeID) {
 			std::unordered_set<size_t> neighbors;
 			neighbors.reserve(layer.size());
 

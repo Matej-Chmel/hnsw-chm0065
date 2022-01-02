@@ -6,10 +6,6 @@ namespace chm {
 		this->nodes.clear();
 	}
 
-	void NearestHeap::copyFrom(NearestHeap& other) {
-		this->nodes = other.nodes;
-	}
-
 	void NearestHeap::fillLayer(IDVec& layer) {
 		layer.clear();
 		layer.reserve(this->nodes.size());
@@ -19,6 +15,9 @@ namespace chm {
 	}
 
 	bool NearestHeap::isCloserThanAny(NodeDistance& node) {
+		if(this->nodes.empty())
+			return true;
+
 		auto& nearest = this->top();
 		return nearest.distance > node.distance;
 	}
@@ -38,7 +37,7 @@ namespace chm {
 	NearestHeap::NearestHeap() {}
 
 	NearestHeap::NearestHeap(NearestHeap& other) {
-		this->copyFrom(other);
+		this->nodes = other.nodes;
 	}
 
 	void NearestHeap::push(float distance, size_t nodeID) {

@@ -1,4 +1,5 @@
 #pragma once
+#include "Config.hpp"
 #include "DynamicList.hpp"
 #include "State.hpp"
 #include <ostream>
@@ -8,15 +9,7 @@
 namespace chm {
 	class Graph : public Unique {
 	public:
-		size_t efConstruction;
-		size_t M;
-		float mL;
-		size_t Mmax;
-		size_t Mmax0;
-
-		bool extendCandidates;
-		bool keepPrunedConnections;
-		bool useHeuristic;
+		Config cfg;
 
 		size_t entryID;
 		size_t entryLevel;
@@ -25,7 +18,6 @@ namespace chm {
 		std::vector<IDVec2D> layers;
 
 		float* coords;
-		size_t dim;
 		float* queryCoords;
 
 		std::default_random_engine gen;
@@ -45,10 +37,9 @@ namespace chm {
 		void fillHeap(size_t queryID, IDVec& eConn, NearestHeap& eNewConn);
 		void initLayers(size_t queryID, size_t level);
 
-		void calcML();
-		Graph(size_t seed, bool rndSeed);
+		Graph(const Config& cfg, size_t seed, bool rndSeed);
 
-		void build(float* coords, size_t dim, size_t count);
+		void build(float* coords, size_t count);
 		void search(float* queryCoords, size_t queryCount, size_t K, size_t ef, IDVec2D& outIDs, FloatVec2D& outDistances);
 
 		size_t getNodeCount();

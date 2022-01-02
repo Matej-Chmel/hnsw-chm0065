@@ -14,12 +14,12 @@ namespace chm {
 				return iter->second;
 		}
 
-		float* nodeCoords = this->coords + nodeID * this->dim;
-		float* qCoords = (s == State::SEARCHING ? this->queryCoords : this->coords) + queryID * this->dim;
+		float* nodeCoords = this->coords + nodeID * this->cfg.dim;
+		float* qCoords = (s == State::SEARCHING ? this->queryCoords : this->coords) + queryID * this->cfg.dim;
 
 		float distance = 0.f;
 
-		for(size_t i = 0; i < this->dim; i++) {
+		for(size_t i = 0; i < this->cfg.dim; i++) {
 			float diff = nodeCoords[i] - qCoords[i];
 			distance += diff * diff;
 		}
@@ -34,7 +34,7 @@ namespace chm {
 		return size_t(
 			std::floorf(
 				-std::logf(
-					this->dist(this->gen) * this->mL
+					this->dist(this->gen) * this->cfg.mL
 				)
 			)
 		);
@@ -53,12 +53,12 @@ namespace chm {
 		}
 
 		for(size_t lc = std::min(L, l);; lc--) {
-			size_t layerMmax = (lc == 0) ? this->Mmax0 : this->Mmax;
+			size_t layerMmax = (lc == 0) ? this->cfg.Mmax0 : this->cfg.Mmax;
 
-			this->searchLayer(queryID, W, this->efConstruction, lc);
+			this->searchLayer(queryID, W, this->cfg.efConstruction, lc);
 
 			NearestHeap neighbors(W.nearestHeap);
-			this->selectNeighbors(queryID, neighbors, this->M, lc);
+			this->selectNeighbors(queryID, neighbors, this->cfg.M, lc);
 			this->connect(queryID, neighbors, lc);
 
 			for(auto& e : neighbors.nodes) {
@@ -119,7 +119,7 @@ namespace chm {
 	}
 
 	void Graph::selectNeighbors(size_t queryID, NearestHeap& outC, size_t M, size_t lc, State s) {
-		if(this->useHeuristic)
+		if(this->cfg.useHeuristic)
 			this->selectNeighborsHeuristic(queryID, outC, M, lc, s);
 		else
 			this->selectNeighborsSimple(outC, M);
@@ -129,7 +129,7 @@ namespace chm {
 		NearestHeap R;
 		auto& W = outC;
 
-		if(this->extendCandidates) {
+		if(this->cfg.extendCandidates) {
 			std::unordered_set<size_t> visited;
 
 			for(auto& e : outC.nodes) {
@@ -151,11 +151,11 @@ namespace chm {
 
 			if(R.isCloserThanAny(e))
 				R.push(e.distance, e.nodeID);
-			else if(this->keepPrunedConnections)
+			else if(this->cfg.keepPrunedConnections)
 				Wd.push(e.distance, e.nodeID);
 		}
 
-		if(this->keepPrunedConnections) {
+		if(this->cfg.keepPrunedConnections) {
 			while(Wd.size() > 0 && R.size() < M) {
 				auto discardedNearest = Wd.pop();
 				R.push(discardedNearest.distance, discardedNearest.nodeID);
@@ -209,30 +209,13 @@ namespace chm {
 		qLayers.resize(nLayers);
 	}
 
-	void Graph::calcML() {
-		this->mL = 1 / std::logf(float(this->M));
-	}
+	Graph::Graph(const Config& cfg, size_t seed, bool rndSeed)
+		: cfg(cfg), entryID(0), entryLevel(0), coords(nullptr), queryCoords(nullptr),
+		gen(rndSeed ? std::random_device{}() : (unsigned int)(seed)),
+		dist(0.f, 1.f) {}
 
-	Graph::Graph(size_t seed, bool rndSeed) {
-		this->efConstruction = 200;
-		this->M = 16;
-		this->Mmax = this->M;
-		this->Mmax0 = this->M * 2;
-		this->calcML();
-
-		this->extendCandidates = false;
-		this->keepPrunedConnections = false;
-		this->useHeuristic = false;
-
-		this->gen = std::default_random_engine(rndSeed ? std::random_device{}() : (unsigned int)(seed));
-		this->dist = std::uniform_real_distribution<float>(0.f, 1.f);
-	}
-
-	void Graph::build(float* coords, size_t dim, size_t count) {
+	void Graph::build(float* coords, size_t count) {
 		this->coords = coords;
-		this->dim = dim;
-
-		this->entryID = 0;
 		this->entryLevel = this->getNewLevel();
 		this->layers.resize(count);
 		this->initLayers(this->entryID, this->entryLevel);
