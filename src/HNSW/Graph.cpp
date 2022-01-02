@@ -212,17 +212,28 @@ namespace chm {
 	Graph::Graph(const Config& cfg, size_t seed, bool rndSeed)
 		: cfg(cfg), entryID(0), entryLevel(0), coords(nullptr), queryCoords(nullptr),
 		gen(rndSeed ? std::random_device{}() : (unsigned int)(seed)),
-		dist(0.f, 1.f) {}
+		dist(0.f, 1.f), debugStream(nullptr), nodeCount(0) { }
 
 	void Graph::build(float* coords, size_t count) {
 		this->coords = coords;
 		this->entryLevel = this->getNewLevel();
+		auto lastID = count - 1;
+		this->nodeCount = 1;
+
 		this->layers.resize(count);
 		this->initLayers(this->entryID, this->entryLevel);
 
 		for(size_t i = 1; i < count; i++) {
 			this->distances.clear();
+			this->nodeCount++;
 			this->insert(i);
+
+			if(this->debugStream) {
+				this->printLayers(*this->debugStream);
+
+				if(i != lastID)
+					*this->debugStream << '\n';
+			}
 		}
 	}
 
@@ -238,36 +249,45 @@ namespace chm {
 	}
 
 	size_t Graph::getNodeCount() {
-		return this->layers.size();
+		return this->nodeCount;
 	}
 
-	void Graph::printLayers(std::ostream& o) {
+	void Graph::printLayers(std::ostream& s) {
 		auto count = this->getNodeCount();
 		auto lastID = count - 1;
 
 		for(size_t nodeID = 0; nodeID < count; nodeID++) {
-			o << "Node " << nodeID << '\n';
+			s << "Node " << nodeID << '\n';
 
 			auto& nodeLayers = this->layers[nodeID];
 			auto nodeLayersLen = nodeLayers.size();
 
 			for(size_t layerID = 0; layerID < nodeLayersLen; layerID++) {
-				o << "Layer " << layerID << ": ";
+				s << "Layer " << layerID << ": ";
 
 				auto& layer = nodeLayers[layerID];
-				auto lastIdx = layer.size() - 1;
 
+				if(layer.empty()) {
+					s << "EMPTY\n";
+					continue;
+				}
+
+				auto lastIdx = layer.size() - 1;
 				IDVec sortedLayer(layer);
 				std::sort(sortedLayer.begin(), sortedLayer.end());
 
 				for(size_t i = 0; i < lastIdx; i++)
-					o << sortedLayer[i] << ' ';
+					s << sortedLayer[i] << ' ';
 
-				o << sortedLayer[lastIdx] << '\n';
+				s << sortedLayer[lastIdx] << '\n';
 			}
 
 			if(nodeID != lastID)
-				o << '\n';
+				s << '\n';
 		}
+	}
+
+	void Graph::setDebugStream(std::ostream& s) {
+		this->debugStream = &s;
 	}
 }

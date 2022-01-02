@@ -23,6 +23,9 @@ namespace chm {
 		std::default_random_engine gen;
 		std::uniform_real_distribution<float> dist;
 
+		std::ostream* debugStream;
+		size_t nodeCount;
+
 		float getDistance(size_t nodeID, size_t queryID, State s = State::INSERTING);
 		size_t getNewLevel();
 
@@ -43,6 +46,7 @@ namespace chm {
 		void search(float* queryCoords, size_t queryCount, size_t K, size_t ef, IDVec2D& outIDs, FloatVec2D& outDistances);
 
 		size_t getNodeCount();
-		void printLayers(std::ostream& o);
+		void printLayers(std::ostream& s);
+		void setDebugStream(std::ostream& s);
 	};
 }
