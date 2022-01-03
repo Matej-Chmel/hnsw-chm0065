@@ -268,7 +268,7 @@ namespace chm {
 			auto& nodeLayers = this->layers[nodeID];
 			auto nodeLayersLen = nodeLayers.size();
 
-			for(size_t layerID = 0; layerID < nodeLayersLen; layerID++) {
+			for(size_t layerID = nodeLayersLen - 1;; layerID--) {
 				s << "Layer " << layerID << ": ";
 
 				auto& layer = nodeLayers[layerID];
@@ -286,6 +286,9 @@ namespace chm {
 					s << sortedLayer[i] << ' ';
 
 				s << sortedLayer[lastIdx] << '\n';
+
+				if(layerID == 0)
+					break;
 			}
 
 			if(nodeID != lastID)
