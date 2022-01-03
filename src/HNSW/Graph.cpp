@@ -53,7 +53,7 @@ namespace chm {
 		}
 
 		for(size_t lc = std::min(L, l);; lc--) {
-			size_t layerMmax = (lc == 0) ? this->cfg.Mmax0 : this->cfg.Mmax;
+			size_t layerMmax = lc == 0 ? this->cfg.Mmax0 : this->cfg.Mmax;
 
 			this->searchLayer(queryID, W, this->cfg.efConstruction, lc);
 
@@ -209,9 +209,9 @@ namespace chm {
 		qLayers.resize(nLayers);
 	}
 
-	Graph::Graph(const Config& cfg, size_t seed, bool rndSeed)
+	Graph::Graph(const Config& cfg, size_t seed, bool useRndSeed)
 		: cfg(cfg), entryID(0), entryLevel(0), coords(nullptr), queryCoords(nullptr),
-		gen(rndSeed ? std::random_device{}() : (unsigned int)(seed)),
+		gen(useRndSeed ? std::random_device{}() : (unsigned int)(seed)),
 		dist(0.f, 1.f), debugStream(nullptr), nodeCount(0) { }
 
 	void Graph::build(float* coords, size_t count) {

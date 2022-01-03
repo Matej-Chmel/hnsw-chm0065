@@ -11,16 +11,16 @@ constexpr unsigned int ELEMENT_SEED = 100;
 constexpr unsigned int LEVEL_SEED = 100;
 constexpr size_t NODE_COUNT = 100;
 
-void run(const fs::path& logsDir, const char* logName, bool useHeuristic, chm::FloatVec& nodeCoords) {
+void run(const fs::path& logsDir, const char* logName, bool useHeuristic, chm::FloatVec& coords) {
 	chm::Config cfg(DIM);
 
 	if(useHeuristic)
 		cfg.setHeuristic();
 
 	std::ofstream log(logsDir / logName);
-	chm::Graph graph(cfg, LEVEL_SEED, false);
-	graph.setDebugStream(log);
-	graph.build(nodeCoords.data(), NODE_COUNT);
+	chm::Graph hnsw(cfg, LEVEL_SEED, false);
+	hnsw.setDebugStream(log);
+	hnsw.build(coords.data(), NODE_COUNT);
 }
 
 int main() {
@@ -28,10 +28,10 @@ int main() {
 	chm::ensureDir(logsDir);
 
 	chm::ElementGenerator gen(ELEMENT_MIN, ELEMENT_MAX, ELEMENT_SEED);
-	chm::FloatVec nodeCoords;
-	gen.fill(nodeCoords, DIM, NODE_COUNT);
+	chm::FloatVec coords;
+	gen.fill(coords, DIM, NODE_COUNT);
 
-	run(logsDir, "simple.log", false, nodeCoords);
-	run(logsDir, "heuristic.log", true, nodeCoords);
+	run(logsDir, "heuristic.log", true, coords);
+	run(logsDir, "simple.log", false, coords);
 	return 0;
 }

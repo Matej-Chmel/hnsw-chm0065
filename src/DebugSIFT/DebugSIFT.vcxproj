@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{c5dc5769-6ea7-4c1c-b099-d5168da3f6dc}</ProjectGuid>
-    <RootNamespace>Tests</RootNamespace>
+    <ProjectGuid>{343b58d7-7ab9-4771-8f33-67c1fa75586f}</ProjectGuid>
+    <RootNamespace>DebugSIFT</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -151,42 +151,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Action.cpp" />
-    <ClCompile Include="ActionBuildBruteforce.cpp" />
-    <ClCompile Include="ActionBuildHNSW.cpp" />
-    <ClCompile Include="ActionGenerateElements.cpp" />
-    <ClCompile Include="CommonState.cpp" />
-    <ClCompile Include="forEachLayer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Runner.cpp" />
-    <ClCompile Include="TestConnectionWithItself.cpp" />
-    <ClCompile Include="TestCoordinatesLength.cpp" />
-    <ClCompile Include="TestCoordinatesRange.cpp" />
-    <ClCompile Include="TestDataReader.cpp" />
-    <ClCompile Include="TestLayerLength.cpp" />
-    <ClCompile Include="TestQueryItself.cpp" />
-    <ClCompile Include="TestSingleLayerDuplicates.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HNSW\HNSW.vcxproj">
       <Project>{9fe61a51-084a-46dc-8f51-7ee983f95a4a}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Action.hpp" />
-    <ClInclude Include="ActionBuildBruteforce.hpp" />
-    <ClInclude Include="ActionBuildHNSW.hpp" />
-    <ClInclude Include="ActionGenerateElements.hpp" />
-    <ClInclude Include="CommonState.hpp" />
-    <ClInclude Include="forEachLayer.hpp" />
-    <ClInclude Include="Runner.hpp" />
-    <ClInclude Include="TestConnectionWithItself.hpp" />
-    <ClInclude Include="TestCoordinatesLength.hpp" />
-    <ClInclude Include="TestCoordinatesRange.hpp" />
-    <ClInclude Include="TestDataReader.hpp" />
-    <ClInclude Include="TestLayerLength.hpp" />
-    <ClInclude Include="TestQueryItself.hpp" />
-    <ClInclude Include="TestSingleLayerDuplicates.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

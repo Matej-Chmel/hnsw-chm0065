@@ -40,7 +40,7 @@ namespace chm {
 		void fillHeap(size_t queryID, IDVec& eConn, NearestHeap& eNewConn);
 		void initLayers(size_t queryID, size_t level);
 
-		Graph(const Config& cfg, size_t seed, bool rndSeed);
+		Graph(const Config& cfg, size_t seed, bool useRndSeed);
 
 		void build(float* coords, size_t count);
 		void search(
