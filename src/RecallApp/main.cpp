@@ -78,7 +78,7 @@ int main() {
 		
 
 	} catch(chm::AppError& e) {
-		std::cout << e.what() << '\n';
+		std::cerr << e.what() << '\n';
 		return EXIT_FAILURE;
 	}
 

@@ -1,4 +1,7 @@
+#include <cstdlib>
 #include <fstream>
+#include <iostream>
+#include "AppError.hpp"
 #include "ElementGenerator.hpp"
 #include "filesystem.hpp"
 #include "Graph.hpp"
@@ -24,14 +27,21 @@ void run(const fs::path& logsDir, const char* logName, bool useHeuristic, chm::F
 }
 
 int main() {
-	auto logsDir = fs::path(SOLUTION_DIR) / "logs";
-	chm::ensureDir(logsDir);
+	try {
+		auto logsDir = fs::path(SOLUTION_DIR) / "logs";
+		chm::ensureDir(logsDir);
 
-	chm::ElementGenerator gen(ELEMENT_MIN, ELEMENT_MAX, ELEMENT_SEED);
-	chm::FloatVec coords;
-	gen.fill(coords, DIM, NODE_COUNT);
+		chm::ElementGenerator gen(ELEMENT_MIN, ELEMENT_MAX, ELEMENT_SEED);
+		chm::FloatVec coords;
+		gen.fill(coords, DIM, NODE_COUNT);
 
-	run(logsDir, "heuristic.log", true, coords);
-	run(logsDir, "simple.log", false, coords);
-	return 0;
+		run(logsDir, "heuristic.log", true, coords);
+		run(logsDir, "simple.log", false, coords);
+
+	} catch(chm::AppError& e) {
+		std::cerr << e.what() << '\n';
+		return EXIT_FAILURE;
+	}
+
+	return EXIT_SUCCESS;
 }
